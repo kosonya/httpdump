@@ -13,7 +13,7 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
         host, _ = self.client_address[:2]
         return host
  
-    def do_WHATEVER(self):
+    def do_POST(self):
         print "Path:", self.path
         ctype, _ = cgi.parse_header(self.headers.getheader('content-type'))
         print "Content type:", ctype
@@ -22,15 +22,10 @@ class HTTPRequestHandler(BaseHTTPRequestHandler):
         data = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
         print "Data:", data
         self.send_response(200, "OK")
- 
-    def do_POST(self):
-        self.do_WHATEVER()
         
     def do_GET(self):
-        self.do_WHATEVER()
-        
-    def do_HEAD(self):
-        self.do_WHATEVER()
+        print "Path:", self.path
+        self.send_response(200, "OK")
 
 class ThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     allow_reuse_address = True
